@@ -31,12 +31,16 @@ class GodotCppConan(ConanFile):
     name = "godot-cpp"
     description = "C++ bindings for the Godot script API"
     license = "MIT"
+    url = "https://github.com/fmorgner/conan-godot-cpp.git"
+    author = "Felix Morgner"
+    topics = ("game-engine", "game-development", "c++")
     settings = {
         "arch": None,
         "os": ["Windows", "Linux", "Macos"],
         "compiler": None,
         "build_type": None,
     }
+    build_requires = ["scons/[~=3]"]
 
     @property
     def _platform(self):
