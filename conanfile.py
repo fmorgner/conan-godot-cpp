@@ -95,6 +95,8 @@ class GodotCppConan(ConanFile):
             os.path.join("include", "godot-cpp", "core"),
             os.path.join("include", "godot-cpp", "gen"),
         ]
-        self.cpp_info.libs = [
-            "godot-cpp.{}.{}.{}".format(self._platform, self._target, self._bits)
-        ]
+        library_base_name = "godot-cpp.{}.{}.{}".format(self._platform, self._target, self._bits)
+        if self.settings.os == "Windows":
+            self.cpp_info.libs = ["lib{}".format(library_base_name)]
+        else:
+            self.cpp_info.libs = [library_base_name]
