@@ -1,6 +1,7 @@
 from conans import ConanFile
 from conans.tools import Git, cpu_count
 
+import os
 
 OS_MAP = {
     "Windows": "windows",
@@ -68,17 +69,17 @@ class GodotCppConan(ConanFile):
 
     def build(self):
         self.run(
-            [
+            " ".join([
                 "scons",
                 "-C",
-                "{}/godot-cpp".format(self.source_folder),
+                "\"{}\"".format(os.path.join(self.source_folder, "godot-cpp")),
                 "platform={}".format(self._platform),
                 "bits={}".format(self._bits),
                 "use_llvm={}".format(self._use_llvm),
                 "target={}".format(self._target),
-                "-j{}".format(cpu_count()),
                 "generate_bindings=yes",
-            ]
+                "-j{}".format(cpu_count()),
+            ])
         )
 
     def package(self):
@@ -89,10 +90,10 @@ class GodotCppConan(ConanFile):
 
     def package_info(self):
         self.cpp_info.includedirs = [
-            "include/godot-native",
-            "include/godot-cpp",
-            "include/godot-cpp/core",
-            "include/godot-cpp/gen",
+            os.path.join("include", "godot-native"),
+            os.path.join("include", "godot-cpp"),
+            os.path.join("include", "godot-cpp", "core"),
+            os.path.join("include", "godot-cpp", "gen"),
         ]
         self.cpp_info.libs = [
             "godot-cpp.{}.{}.{}".format(self._platform, self._target, self._bits)
